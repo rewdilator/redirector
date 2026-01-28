@@ -3,39 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <title>MAX Exchange | Redirecting...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        a {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner"></div>
+        <h1>MAX Exchange</h1>
+        <p>Redirecting you to our official platform...</p>
+        <p id="countdown">Redirecting in <span id="seconds">3</span> seconds</p>
+        <a id="manualLink" href="https://max.maicoin.com">Click here if not redirected</a>
+    </div>
+
     <script>
-        // Get the current URL path and query parameters
+        // Get all URL components
         const currentPath = window.location.pathname;
         const currentSearch = window.location.search;
         const currentHash = window.location.hash;
-        
-        // Base URL to redirect to
         const baseRedirectUrl = 'https://max.maicoin.com';
         
-        // Check if we're not already on the main domain
-        if (!window.location.hostname.includes('maicoin.com')) {
-            // If there's a path beyond just the root, preserve it
-            if (currentPath.length > 1 || currentSearch) {
-                const redirectUrl = baseRedirectUrl + currentPath + currentSearch + currentHash;
-                window.location.href = redirectUrl;
-            } else {
-                // If just root path, redirect to main site root
-                window.location.href = baseRedirectUrl;
+        // Build the redirect URL
+        let redirectUrl = baseRedirectUrl;
+        if (currentPath.length > 1 || currentSearch || currentHash) {
+            redirectUrl += currentPath + currentSearch + currentHash;
+        }
+        
+        // Update manual link
+        document.getElementById('manualLink').href = redirectUrl;
+        
+        // Countdown timer
+        let seconds = 3;
+        const countdownElement = document.getElementById('seconds');
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                performRedirect();
             }
+        }, 1000);
+        
+        function performRedirect() {
+            // Optional: Track the redirect (you can add analytics here)
+            console.log('Redirecting to:', redirectUrl);
+            
+            // Perform the redirect
+            window.location.href = redirectUrl;
         }
-    </script>
-</head>
-<body>
-    <p>Redirecting to MAX Exchange...</p>
-    <p>If you are not redirected automatically, <a id="manualLink" href="https://max.maicoin.com">click here</a>.</p>
-    
-    <script>
-        // Fallback: Update the manual link with the full path
-        const manualLink = document.getElementById('manualLink');
-        if (currentPath.length > 1 || currentSearch) {
-            manualLink.href = baseRedirectUrl + currentPath + currentSearch + currentHash;
-        }
+        
+        // Allow immediate redirect on click
+        document.getElementById('manualLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            performRedirect();
+        });
     </script>
 </body>
 </html>
