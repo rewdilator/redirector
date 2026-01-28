@@ -1,1 +1,41 @@
-index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // Get the current URL path and query parameters
+        const currentPath = window.location.pathname;
+        const currentSearch = window.location.search;
+        const currentHash = window.location.hash;
+        
+        // Base URL to redirect to
+        const baseRedirectUrl = 'https://max.maicoin.com';
+        
+        // Check if we're not already on the main domain
+        if (!window.location.hostname.includes('maicoin.com')) {
+            // If there's a path beyond just the root, preserve it
+            if (currentPath.length > 1 || currentSearch) {
+                const redirectUrl = baseRedirectUrl + currentPath + currentSearch + currentHash;
+                window.location.href = redirectUrl;
+            } else {
+                // If just root path, redirect to main site root
+                window.location.href = baseRedirectUrl;
+            }
+        }
+    </script>
+</head>
+<body>
+    <p>Redirecting to MAX Exchange...</p>
+    <p>If you are not redirected automatically, <a id="manualLink" href="https://max.maicoin.com">click here</a>.</p>
+    
+    <script>
+        // Fallback: Update the manual link with the full path
+        const manualLink = document.getElementById('manualLink');
+        if (currentPath.length > 1 || currentSearch) {
+            manualLink.href = baseRedirectUrl + currentPath + currentSearch + currentHash;
+        }
+    </script>
+</body>
+</html>
